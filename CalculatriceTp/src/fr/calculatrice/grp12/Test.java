@@ -8,7 +8,7 @@ public class Test {
 		Pile p = new Pile();
 		
 		for (double i=0;i<10;i++)
-			p.push(i);
+			p.push((char)i);
 		
 		System.out.println("Pile initiale 	:	" + p.toString());
 		

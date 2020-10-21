@@ -10,7 +10,7 @@ import java.util.Stack;
  *
  */
 @SuppressWarnings("serial")
-public class Pile extends Stack<Double> {
+public class Pile extends Stack<Character> {
 
 	/**
 	 * 
@@ -25,8 +25,8 @@ public class Pile extends Stack<Double> {
 	}
 	
 	public void swap() {
-		Double numberOnTop = this.pop();
-		Double numberToTop = this.pop();
+		Character numberOnTop = this.pop();
+		Character numberToTop = this.pop();
 		this.add(numberOnTop);
 		this.add(numberToTop);
 	}
