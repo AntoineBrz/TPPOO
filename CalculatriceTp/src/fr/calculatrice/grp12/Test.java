@@ -5,11 +5,14 @@ public class Test {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 	
-		Pile p = new Pile();
+		Accumulateur acc = new Accumulateur();
+		Pile p  = acc.getPile();
 		
 		for (double i=0;i<10;i++)
-			p.push((char)i);
+			p.push(i);
 		
+		
+		// Test de la pile
 		System.out.println("Pile initiale 	:	" + p.toString());
 		
 		p.swap();
@@ -18,7 +21,9 @@ public class Test {
 		p.drop();
 		System.out.println("Pile drop 	:	" + p.toString());
 
-
+		
+		// Test de l'accumulateur
+		acc.add();
 		
 	}
 	

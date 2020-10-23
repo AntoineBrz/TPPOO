@@ -6,8 +6,13 @@ import java.beans.PropertyChangeListener;
 public class Accumulateur implements IAccumulateur {
 
 	Double result;
-	Pile pile;
+	Pile pile = new Pile();
 	PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+	
+	
+	public Accumulateur() {
+		
+	}
 	
 	
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -18,7 +23,6 @@ public class Accumulateur implements IAccumulateur {
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
 	    this.pcs.removePropertyChangeListener(listener);
 	}
-
 
 	
 	@Override
@@ -78,7 +82,7 @@ public class Accumulateur implements IAccumulateur {
 
 	@Override
 	public void accumuler(Character character) {
-		pile.push(character);
+		pile.push((double)character);
 	}
 
 	@Override
@@ -86,4 +90,14 @@ public class Accumulateur implements IAccumulateur {
 		pile.drop();
 	}
 
+	public Pile getPile() {
+		return this.pile;
+	}
+	
+	public void setPile(Pile pile) {
+		this.pile = pile;
+	}
+	
+	
+	
 }
