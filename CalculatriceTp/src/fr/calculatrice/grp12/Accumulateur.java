@@ -26,8 +26,8 @@ public class Accumulateur implements IAccumulateur {
 
 	
 	@Override
-	public void push() {
-//		pile.push(result);
+	public void push(Double nombre) {
+		pile.push(nombre);
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class Accumulateur implements IAccumulateur {
 
 	
 	/*CALCUL*/
-	@Override
+	
 	public void add() {
 		Double oldResult = this.result;
 		Double result = (double)pile.pop() + (double)pile.pop();
@@ -78,16 +78,6 @@ public class Accumulateur implements IAccumulateur {
 	@Override
 	public void backspace() {
 		pile.pop();
-	}
-
-	@Override
-	public void accumuler(Character character) {
-		pile.push((double)character);
-	}
-
-	@Override
-	public void reset() {
-		pile.drop();
 	}
 
 	public Pile getPile() {
