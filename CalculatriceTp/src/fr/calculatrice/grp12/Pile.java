@@ -21,7 +21,13 @@ public class Pile extends Stack<Double> {
 	
 	
 	public void drop() {
-		this.pop();
+		while(true) {
+			try {
+				this.pop();
+			} catch(Exception e) {
+				break;
+			}
+		}
 	}
 	
 	public void swap() {
@@ -30,5 +36,6 @@ public class Pile extends Stack<Double> {
 		this.add(numberOnTop);
 		this.add(numberToTop);
 	}
+	
 	
 }

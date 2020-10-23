@@ -25,6 +25,8 @@ public class Test {
 		// Test de l'accumulateur
 		acc.add();
 		
+			
+		
 	}
 	
 	

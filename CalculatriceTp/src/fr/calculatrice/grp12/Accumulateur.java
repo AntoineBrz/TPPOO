@@ -99,5 +99,4 @@ public class Accumulateur implements IAccumulateur {
 	}
 	
 	
-	
 }
