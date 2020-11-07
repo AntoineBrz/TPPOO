@@ -18,7 +18,7 @@ public class Test {
 		p.swap();
 		System.out.println("Pile swap 	:	" + p.toString());
 		
-		p.drop();
+		p.clear();
 		System.out.println("Pile drop 	:	" + p.toString());
 
 		

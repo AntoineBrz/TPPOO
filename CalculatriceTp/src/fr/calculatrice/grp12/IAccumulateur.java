@@ -2,6 +2,7 @@
  * 
  */
 package fr.calculatrice.grp12;
+import java.beans.PropertyChangeSupport;
 
 /**
  * @author grp12
@@ -9,6 +10,7 @@ package fr.calculatrice.grp12;
  */
 public interface IAccumulateur {
 
+	public PropertyChangeSupport getpcs();
 	public void push(Double nombre);
 	public void drop();
 	public void swap();

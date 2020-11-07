@@ -14,28 +14,16 @@ public class Pile extends Stack<Double> {
 
 	/**
 	 * 
-	 */
+	*/
 	public Pile() {
-
+		this.add(0.);
 	}
-	
-	
-	public void drop() {
-		while(true) {
-			try {
-				this.pop();
-			} catch(Exception e) {
-				break;
-			}
-		}
-	}
-	
+		
 	public void swap() {
 		Double numberOnTop = this.pop();
 		Double numberToTop = this.pop();
 		this.add(numberOnTop);
 		this.add(numberToTop);
 	}
-	
 	
 }

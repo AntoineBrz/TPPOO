@@ -5,7 +5,7 @@ import java.beans.PropertyChangeListener;
 
 public class Accumulateur implements IAccumulateur {
 
-	Double result;
+	
 	Pile pile = new Pile();
 	PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	
@@ -32,7 +32,7 @@ public class Accumulateur implements IAccumulateur {
 
 	@Override
 	public void drop() {
-		pile.drop();
+		pile.clear();
 	}
 
 	@Override
@@ -44,35 +44,43 @@ public class Accumulateur implements IAccumulateur {
 	/*CALCUL*/
 	
 	public void add() {
-		Double oldResult = this.result;
+		Double oldResult = this.pile.lastElement();
 		Double result = (double)pile.pop() + (double)pile.pop();
+		pile.add(result);
 		pcs.firePropertyChange("valeur", oldResult, result);
 	}
 
 
 	@Override
 	public void sub() {
-		Double oldResult = this.result;
+		Double oldResult = this.pile.lastElement();
 		Double result = (double)pile.pop() - (double)pile.pop();
+		pile.add(result);
 		pcs.firePropertyChange("valeur", oldResult, result);
 	}
 
 	@Override
 	public void mult() {
-		Double oldResult = this.result;
+		Double oldResult = this.pile.lastElement();
 		Double result = (double)pile.pop() * (double)pile.pop();
+		pile.add(result);
 		pcs.firePropertyChange("valeur", oldResult, result);
 	}
 
 	@Override
 	public void div() {
-		Double oldResult = this.result;
+		Double oldResult =this.pile.lastElement();
 		Double result = (double)pile.pop() / (double)pile.pop();
+		pile.add(result);
 		pcs.firePropertyChange("valeur", oldResult, result);
 	}
 
 	@Override
 	public void neg() {
+		Double oldResult=this.pile.pop();;
+		Double result=-oldResult;
+		pile.add(result);
+		pcs.firePropertyChange("valeur",oldResult,result);
 	}
 
 	@Override
@@ -86,6 +94,13 @@ public class Accumulateur implements IAccumulateur {
 	
 	public void setPile(Pile pile) {
 		this.pile = pile;
+	}
+
+
+	@Override
+	public PropertyChangeSupport getpcs() {
+		// TODO Auto-generated method stub
+		return this.pcs;
 	}
 	
 	
