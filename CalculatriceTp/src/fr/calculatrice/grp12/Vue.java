@@ -22,24 +22,14 @@ import javafx.scene.paint.Color;
  */
 public class Vue extends Application  implements IVue  {
     
-	EventHandler<MouseEvent> handler;
+	public static EventHandler<MouseEvent> handler;
 	
-	public Vue() {
-		this.handler = new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent evt) {
-				System.out.println(evt.getSource());
-			}
-
-		};
-	}
-	
-	public Vue(EventHandler<MouseEvent> handler) {
-	/*
-	 * Enregistrer le controleur comme handler lors de la création de la vue	
-	 */
-		this.handler = handler;
+	public void init() throws Exception {
+		if (Vue.handler==null) 
+			throw new Exception("Le controleur "
+					+ "doit s'enregistrer "
+					+ "en tant que handler");
+		
 	}
 	
 	
@@ -142,9 +132,10 @@ public class Vue extends Application  implements IVue  {
     
     
     
-    
-    public static void main(String[] args) {
-        launch(args);
-    }
+
+	@Override
+	public void affiche() throws Exception {
+		launch();
+	}
     
 }
