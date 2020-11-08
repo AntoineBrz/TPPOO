@@ -23,20 +23,23 @@ import javafx.scene.paint.Color;
 public class Vue extends Application  implements IVue  {
     
 	public static EventHandler<MouseEvent> handler;
+	ArrayList<String> memoireResultats = new ArrayList<>();
+	private static Label x,y,z;
+
+	public Vue() {
+		memoireResultats.add("");
+		memoireResultats.add("");
+		memoireResultats.add("");
+		
+	}
 	
 	public void init() throws Exception {
+		
 		if (Vue.handler==null) 
 			throw new Exception("Le controleur "
 					+ "doit s'enregistrer "
 					+ "en tant que handler");
-		
-	}
 	
-	
-	@Override
-	public void change(ArrayList<String> data) {
-		// TODO changer la donnée de mon historique
-		
 	}
 	
 	
@@ -47,15 +50,15 @@ public class Vue extends Application  implements IVue  {
         rootbox.setPadding(new Insets(15,20, 10,10));
     
     	//Afficheurs
-    	Label z=new Label("Z ="+" valeur de z");
+    	z=new Label("Z = "+memoireResultats.get(2));
     	z.setBackground(new Background(new BackgroundFill(Color.rgb(200, 200, 200, 1), null, null)));
     	rootbox.getChildren().add(z);
     	
-    	Label y=new Label("Y ="+" valeur de y");
+    	y=new Label("Y = "+memoireResultats.get(1));
     	y.setBackground(new Background(new BackgroundFill(Color.rgb(200, 200, 200, 1), null, null)));
     	rootbox.getChildren().add(y);
     	
-    	Label x=new Label("X ="+" valeur de x");
+    	x=new Label("X = "+memoireResultats.get(0));
     	x.setBackground(new Background(new BackgroundFill(Color.rgb(200, 200, 200, 1), null, null)));
     	rootbox.getChildren().add(x);
     	//GridPane
@@ -137,5 +140,26 @@ public class Vue extends Application  implements IVue  {
 	public void affiche() throws Exception {
 		launch();
 	}
+
+
+	@Override
+	public void changeX(String current) {
+		x.setText(current);
+	}
     
+	
+	@Override
+	public void change(ArrayList<String> newData) {
+		/*
+		 * z à changer lorsqu'un nouveau calcul est fait 
+		 * newData contient soit 1 nouveau nombre en entrée, 
+		 * soit deux valeurs : l'ancienne valeur en y, la nouvelle valeur en x
+		 */
+		y.setText(newData.get(0));
+		
+		}
+		
+	
+	
+	
 }

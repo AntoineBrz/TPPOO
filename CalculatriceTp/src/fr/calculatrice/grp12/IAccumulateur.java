@@ -19,7 +19,7 @@ public interface IAccumulateur {
 	public void div();
 	public void neg();
 	public void backspace();
-//	public void accumuler(Character character);
-//	public void reset();
+	public void accumuler(Character touche);
+	public void reset();
 	
 }
