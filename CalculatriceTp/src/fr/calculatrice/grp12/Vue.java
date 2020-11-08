@@ -62,7 +62,7 @@ public class Vue extends Application  implements IVue  {
         createbutton(rootGrid);
         rootbox.getChildren().add(rootGrid);
      
-       Scene scene = new Scene(root, 300, 300);
+       Scene scene = new Scene(rootbox, 300, 300);
        primaryStage.setTitle("Calculatrice");
        primaryStage.setScene(scene);
        primaryStage.show();
