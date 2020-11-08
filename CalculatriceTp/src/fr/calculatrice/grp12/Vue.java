@@ -155,8 +155,8 @@ public class Vue extends Application  implements IVue  {
 		 * newData contient soit 1 nouveau nombre en entrée, 
 		 * soit deux valeurs : l'ancienne valeur en y, la nouvelle valeur en x
 		 */
-		y.setText(newData.get(0));
-		
+		z.setText(newData.get(0));
+		y.setText(newData.get(1));
 		}
 		
 	

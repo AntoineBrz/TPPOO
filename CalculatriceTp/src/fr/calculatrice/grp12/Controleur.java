@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Controleur implements 	PropertyChangeListener,
 									EventHandler<MouseEvent>{
@@ -25,23 +26,26 @@ public class Controleur implements 	PropertyChangeListener,
 		/*
 		 * Avertit le controleur d'une nouvelle valeur à passer à la vue
 		 */
-		if (evt.getPropertyName().equals("valeur")) {
-			ArrayList<String> newData = new ArrayList<String>();
-			newData.add(evt.getOldValue().toString());
-			newData.add(evt.getNewValue().toString());
-			
-			view.change(newData);
-			
-		}
+	
 
 		if (evt.getPropertyName().equals("saisie")) { // en X
 			view.changeX(evt.getNewValue().toString());
 		}
 		
-		if (evt.getPropertyName().equals("nouveauNb")) { // en Y
+		else if (evt.getPropertyName().equals("nouveauNb")) { // en Y
 			ArrayList<String> newData = new ArrayList<String>();
+			newData.add(evt.getOldValue().toString());
 			newData.add(evt.getNewValue().toString());
 			view.change(newData);
+		}
+		
+		else if (evt.getPropertyName().equals("valeur")) { 
+			//mettre nouvelle valeur en X, enlever anciennes car QUE 2 RESULTATS
+			view.changeX(evt.getNewValue().toString());
+			view.change(new ArrayList<String>(
+					Arrays.asList(
+							"",evt.getNewValue().toString())
+					));
 		}
 		
 	}

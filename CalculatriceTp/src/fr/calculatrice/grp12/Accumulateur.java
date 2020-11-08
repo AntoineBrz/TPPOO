@@ -80,8 +80,8 @@ public class Accumulateur implements IAccumulateur {
 	public void backspace() {
 		try {
 			memoireChar.remove(memoireChar.size()-1);
-		} catch(IndexOutOfBoundsException e) {
-			// plus rien dans la mémoire
+		} catch(Exception e) {
+			
 		}
 	}
 
@@ -106,11 +106,10 @@ public class Accumulateur implements IAccumulateur {
 		String cumul = "";
 		for(Character chiffre:memoireChar)
 			cumul += chiffre;
+		Double oldNumber=pile.lastElement();
 		pile.push(Double.parseDouble(cumul));
 		pcs.firePropertyChange("saisie", null, Double.parseDouble(cumul));
-		System.out.println(pile);
-		// 2 parce que la pile initialisée avec [0.0] (????)
-		pcs.firePropertyChange("nouveauNb", null, Double.parseDouble(cumul));
+		pcs.firePropertyChange("nouveauNb", oldNumber, Double.parseDouble(cumul));
 		memoireChar = new ArrayList<Character>();
 	}
 
