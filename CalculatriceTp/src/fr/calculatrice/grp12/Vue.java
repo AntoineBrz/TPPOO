@@ -24,6 +24,17 @@ public class Vue extends Application  implements IVue  {
     
 	EventHandler<MouseEvent> handler;
 	
+	public Vue() {
+		this.handler = new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent evt) {
+				System.out.println(evt.getSource());
+			}
+
+		};
+	}
+	
 	public Vue(EventHandler<MouseEvent> handler) {
 	/*
 	 * Enregistrer le controleur comme handler lors de la création de la vue	
