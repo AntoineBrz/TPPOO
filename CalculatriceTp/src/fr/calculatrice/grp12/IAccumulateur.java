@@ -10,7 +10,6 @@ import java.beans.PropertyChangeSupport;
  */
 public interface IAccumulateur {
 
-	public PropertyChangeSupport getpcs();
 	public void push(Double nombre);
 	public void drop();
 	public void swap();

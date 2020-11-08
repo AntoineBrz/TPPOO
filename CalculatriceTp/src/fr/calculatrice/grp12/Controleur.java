@@ -2,28 +2,32 @@ package fr.calculatrice.grp12;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class Controleur implements PropertyChangeListener, ActionListener {
+import javafx.application.Application;
+import javafx.event.EventHandler;
+import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 
-	IAccumulateur acc = new Accumulateur();
-	PropertyChangeSupport pcs;
+public class Controleur implements 	PropertyChangeListener,
+									EventHandler<MouseEvent>{
+	
+	IAccumulateur acc = new Accumulateur((PropertyChangeListener)this);
+	IVue view = new Vue((EventHandler<MouseEvent>)this);
 	
 	public Controleur() {
-		this.pcs=acc.getpcs();
-		pcs.addPropertyChangeListener(this);
 	}
+	
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 	}
               
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void handle(MouseEvent evt) {
+		Button btn = (Button)evt.getSource();
+		System.out.println(btn.getText());
 	}
 	
-	
+
 	
 }

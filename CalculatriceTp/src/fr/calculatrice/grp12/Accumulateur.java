@@ -10,19 +10,10 @@ public class Accumulateur implements IAccumulateur {
 	PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	
 	
-	public Accumulateur() {
-		
+	public Accumulateur(PropertyChangeListener propertyChangeListener) {
+		this.pcs.addPropertyChangeListener(propertyChangeListener);
 	}
 	
-	
-	public void addPropertyChangeListener(PropertyChangeListener listener) {
-		this.pcs.addPropertyChangeListener(listener);
-	}
-	
-	
-	public void removePropertyChangeListener(PropertyChangeListener listener) {
-	    this.pcs.removePropertyChangeListener(listener);
-	}
 
 	
 	@Override
@@ -97,11 +88,7 @@ public class Accumulateur implements IAccumulateur {
 	}
 
 
-	@Override
-	public PropertyChangeSupport getpcs() {
-		// TODO Auto-generated method stub
-		return this.pcs;
-	}
+
 	
 	
 }

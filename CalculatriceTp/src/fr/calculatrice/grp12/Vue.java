@@ -1,20 +1,37 @@
 package fr.calculatrice.grp12;
 
+import java.util.ArrayList;
+
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.control.*;
-import javafx.geometry.*;
 import javafx.scene.input.MouseEvent;
-/**
- *
- * @author Tom
- */
-public class Test extends Application {
-    
-    @Override
+import javafx.geometry.*;
+
+public class Vue extends Application implements IVue  {
+
+	EventHandler<MouseEvent> handler;
+	
+	public Vue(EventHandler<MouseEvent> handler) {
+	/*
+	 * Enregistrer le controleur comme handler lors de la création de la vue	
+	 */
+		this.handler = handler;
+	}
+	
+	
+	@Override
+	public void change(ArrayList<String> data) {
+		// TODO changer la donnée de mon historique
+		
+	}
+
+
+  @Override
    public void start(Stage primaryStage) throws Exception {
        GridPane root = new GridPane();
  
@@ -45,6 +62,7 @@ public class Test extends Application {
         for(int i=1;i<10;i++){
             String title=String.valueOf(i);
             Button btn=new Button(title);   
+            btn.addEventHandler(MouseEvent.MOUSE_CLICKED, this.handler);
             
             if(s<3){
                 GridPane.setHalignment(btn, HPos.RIGHT);
@@ -64,6 +82,7 @@ public class Test extends Application {
         }
        
         Button btn=new Button("0"); 
+        btn.addEventHandler(MouseEvent.MOUSE_CLICKED, this.handler);
         GridPane.setHalignment(btn, HPos.RIGHT);
         root.add(btn,0,4);
         
@@ -72,6 +91,7 @@ public class Test extends Application {
         int i=1;
         for(String op : labelop) {
  	       Button btnop=new Button(op);
+           btnop.addEventHandler(MouseEvent.MOUSE_CLICKED, this.handler);
  	       GridPane.setHalignment(btnop, HPos.RIGHT);
  	       root.add(btnop,3,i);
  	       i+=1;
@@ -82,6 +102,7 @@ public class Test extends Application {
         int k=1;
         for(String manip : labelmanip) {
  	       Button btnmanip=new Button(manip);
+           btnmanip.addEventHandler(MouseEvent.MOUSE_CLICKED, this.handler);
  	       GridPane.setHalignment(btnmanip, HPos.RIGHT);
  	       root.add(btnmanip,k,4);
  	       k+=1;
@@ -89,11 +110,9 @@ public class Test extends Application {
         
     }
     
-    
-    
-    
-    public static void main(String[] args) {
-        launch(args);
-    }
+	public static void main(String[] args) {
+		Controleur controleur = new Controleur();
+		Application.launch(Vue.class, args);
+	}
     
 }
