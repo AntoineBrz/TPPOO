@@ -5,15 +5,23 @@ import java.util.ArrayList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.geometry.*;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
-public class Vue extends Application implements IVue  {
-
+/**
+ *
+ * @author 
+ */
+public class Vue extends Application  implements IVue  {
+    
 	EventHandler<MouseEvent> handler;
 	
 	public Vue(EventHandler<MouseEvent> handler) {
@@ -29,22 +37,30 @@ public class Vue extends Application implements IVue  {
 		// TODO changer la donnée de mon historique
 		
 	}
-
-
-  @Override
-   public void start(Stage primaryStage) throws Exception {
-       GridPane root = new GridPane();
- 
-       root.setPadding(new Insets(20));
-       root.setHgap(25);
-       root.setVgap(15);
- 
-       Label labelTitle = new Label("XXXXXXXXXXXXXX");
- 
-       // Put on cell (0,0), span 2 column, 1 row.
-       root.add(labelTitle, 0, 0, 4, 1);
- 
-       createbutton(root);
+	
+	
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+    	VBox rootbox= new VBox();
+    	rootbox.setSpacing(10);
+        rootbox.setPadding(new Insets(15,20, 10,10));
+    
+    	//Afficheurs
+    	Label z=new Label("Z ="+" valeur de z");
+    	z.setBackground(new Background(new BackgroundFill(Color.rgb(200, 200, 200, 1), null, null)));
+    	rootbox.getChildren().add(z);
+    	
+    	Label y=new Label("Y ="+" valeur de y");
+    	y.setBackground(new Background(new BackgroundFill(Color.rgb(200, 200, 200, 1), null, null)));
+    	rootbox.getChildren().add(y);
+    	
+    	Label x=new Label("X ="+" valeur de x");
+    	x.setBackground(new Background(new BackgroundFill(Color.rgb(200, 200, 200, 1), null, null)));
+    	rootbox.getChildren().add(x);
+    	//GridPane
+    	GridPane rootGrid = new GridPane();
+        createbutton(rootGrid);
+        rootbox.getChildren().add(rootGrid);
      
        Scene scene = new Scene(root, 300, 300);
        primaryStage.setTitle("Calculatrice");
@@ -79,6 +95,9 @@ public class Vue extends Application implements IVue  {
                 root.add(btn,s-6,1);
                 s+=1;
             }
+         
+         
+           
         }
        
         Button btn=new Button("0"); 
@@ -98,7 +117,7 @@ public class Vue extends Application implements IVue  {
  	       }
         
         //MANIP
-        String[] labelmanip={"â†�","â†µ"};
+        String[] labelmanip={"←","↵"};
         int k=1;
         for(String manip : labelmanip) {
  	       Button btnmanip=new Button(manip);
@@ -110,9 +129,11 @@ public class Vue extends Application implements IVue  {
         
     }
     
-	public static void main(String[] args) {
-		Controleur controleur = new Controleur();
-		Application.launch(Vue.class, args);
-	}
+    
+    
+    
+    public static void main(String[] args) {
+        launch(args);
+    }
     
 }
