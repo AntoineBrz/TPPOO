@@ -26,26 +26,26 @@ public class Controleur implements 	PropertyChangeListener,
 		/*
 		 * Avertit le controleur d'une nouvelle valeur à passer à la vue
 		 */
-	
+		
 
-		if (evt.getPropertyName().equals("saisie")) { // en X
+		if (evt.getPropertyName().equals(Accumulateur.SAISIE)) { // en X
 			view.changeX(evt.getNewValue().toString());
 		}
 		
-		else if (evt.getPropertyName().equals("nouveauNb")) { // en Y
+		else if (evt.getPropertyName().equals(Accumulateur.PUSH)) { // en Y
 			ArrayList<String> newData = new ArrayList<String>();
 			newData.add(evt.getOldValue().toString());
 			newData.add(evt.getNewValue().toString());
 			view.change(newData);
 		}
 		
-		else if (evt.getPropertyName().equals("valeur")) { 
+		else if (evt.getPropertyName().equals(Accumulateur.RESULTAT)) { 
 			//mettre nouvelle valeur en X, enlever anciennes car QUE 2 RESULTATS
 			view.changeX(evt.getNewValue().toString());
-			view.change(new ArrayList<String>(
-					Arrays.asList(
-							"",evt.getNewValue().toString())
-					));
+			ArrayList<String> newData = new ArrayList<String>();
+			newData.add(evt.getOldValue().toString());
+			newData.add(evt.getNewValue().toString());
+			view.change(newData);
 		}
 		
 	}
@@ -61,7 +61,7 @@ public class Controleur implements 	PropertyChangeListener,
     
     private void calculer(char touche) {
     	String op = String.valueOf(touche); // eviter charAt
-    	// TODO faire usage de Vue.ADD = "+" static...
+    	// TODO faire usage de Vue.ADD = "+" static final...
     	switch (op) {
     	case "+":
     		this.acc.add();

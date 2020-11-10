@@ -6,10 +6,12 @@ import java.beans.PropertyChangeListener;
 
 public class Accumulateur implements IAccumulateur {
 
-	
+	public static final String SAISIE = "saisie";
+	public static final String PUSH = "nouveauNombre";
+	public static final String RESULTAT = "nouveauResultatDeCalcul";
 	Pile pile = new Pile();
 	PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-	ArrayList<Character> memoireChar = new ArrayList<>();
+	ArrayList<Character> memoireCharacter = new ArrayList<>();
 	
 	public Accumulateur(PropertyChangeListener propertyChangeListener) {
 		this.pcs.addPropertyChangeListener(propertyChangeListener);
@@ -36,36 +38,37 @@ public class Accumulateur implements IAccumulateur {
 	/*CALCUL*/
 	
 	public void add() {
-		System.out.println(pile);
-		Double oldResult = this.pile.lastElement();
 		Double result = (double)pile.pop() + (double)pile.pop();
+		Double oldResult = this.pile.lastElement();
 		pile.add(result);
-		pcs.firePropertyChange("valeur", oldResult, result);
+		pcs.firePropertyChange(RESULTAT, oldResult, result);
 	}
 
 
 	@Override
 	public void sub() {
+		pile.swap();
+		Double result = - (double)pile.pop() + (double)pile.pop();
 		Double oldResult = this.pile.lastElement();
-		Double result = (double)pile.pop() - (double)pile.pop();
 		pile.add(result);
-		pcs.firePropertyChange("valeur", oldResult, result);
+		pcs.firePropertyChange(RESULTAT, oldResult, result);
 	}
 
 	@Override
 	public void mult() {
-		Double oldResult = this.pile.lastElement();
 		Double result = (double)pile.pop() * (double)pile.pop();
+		Double oldResult = this.pile.lastElement();
 		pile.add(result);
-		pcs.firePropertyChange("valeur", oldResult, result);
+		pcs.firePropertyChange(RESULTAT, oldResult, result);
 	}
 
 	@Override
 	public void div() {
-		Double oldResult =this.pile.lastElement();
+		pile.swap();
 		Double result = (double)pile.pop() / (double)pile.pop();
+		Double oldResult = this.pile.lastElement();
 		pile.add(result);
-		pcs.firePropertyChange("valeur", oldResult, result);
+		pcs.firePropertyChange(RESULTAT, oldResult, result);
 	}
 
 	@Override
@@ -73,13 +76,13 @@ public class Accumulateur implements IAccumulateur {
 		Double oldResult=this.pile.pop();;
 		Double result=-oldResult;
 		pile.add(result);
-		pcs.firePropertyChange("valeur",oldResult,result);
+		pcs.firePropertyChange(RESULTAT,oldResult,result);
 	}
 
 	@Override
 	public void backspace() {
 		try {
-			memoireChar.remove(memoireChar.size()-1);
+			memoireCharacter.remove(memoireCharacter.size()-1);
 		} catch(Exception e) {
 			
 		}
@@ -88,12 +91,11 @@ public class Accumulateur implements IAccumulateur {
 
 	@Override
 	public void accumuler(Character touche) {
-		memoireChar.add(touche);
+		memoireCharacter.add(touche);
 		String cumul = "";
-		for(Character chiffre:memoireChar)
+		for(Character chiffre:memoireCharacter)
 			cumul += chiffre;
-		//pile.push(Double.parseDouble(cumul));
-		pcs.firePropertyChange("saisie", null, Double.parseDouble(cumul));
+		pcs.firePropertyChange(SAISIE, null, Double.parseDouble(cumul));
 	}
 
 
@@ -104,26 +106,14 @@ public class Accumulateur implements IAccumulateur {
 		 * Appui sur entrée
 		 */
 		String cumul = "";
-		for(Character chiffre:memoireChar)
+		for(Character chiffre:memoireCharacter)
 			cumul += chiffre;
 		Double oldNumber=pile.lastElement();
 		pile.push(Double.parseDouble(cumul));
 		pcs.firePropertyChange("saisie", null, Double.parseDouble(cumul));
-		pcs.firePropertyChange("nouveauNb", oldNumber, Double.parseDouble(cumul));
-		memoireChar = new ArrayList<Character>();
+		pcs.firePropertyChange(PUSH, oldNumber, Double.parseDouble(cumul));
+		memoireCharacter = new ArrayList<Character>();
 	}
-
-
-
-	public Pile getPile() {
-		return this.pile;
-	}
-	
-	
-	public void setPile(Pile pile) {
-		this.pile = pile;
-	}
-
 
 	
 }
