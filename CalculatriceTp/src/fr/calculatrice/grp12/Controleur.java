@@ -52,7 +52,7 @@ public class Controleur implements 	PropertyChangeListener,
 	@Override
 	public void handle(MouseEvent evt) {
 		/*
-		 * Traitement de l'action à effectuer grâce à texte du btn 
+		 * Traitement de l'action à effectuer grâce au texte du btn 
 		 * (1 caractère)
 		 */
 		Button btn = (Button)evt.getSource();
@@ -63,10 +63,10 @@ public class Controleur implements 	PropertyChangeListener,
     private void handleButtonCharacter(char touche) {
     	/*
     	 * Effectue la délégation d'action vers le modèle (Accumulateur).
-    	 * La méthode propertyChange se chargera de récupérer traiter les actions
+    	 * La méthode propertyChange() se chargera de récupérer traiter les actions
     	 * du modèle ensuite, et de les passer à la vue.
     	 */
-    	String op = String.valueOf(touche); // pour éviter charAt à chaque case
+    	String op = String.valueOf(touche); // pour éviter charAt() à chaque "case"
     	switch (op) {
     	case "+":
     		this.acc.add();

@@ -2,7 +2,6 @@
  * 
  */
 package fr.calculatrice.grp12;
-import java.beans.PropertyChangeSupport;
 
 /**
  * @author grp12

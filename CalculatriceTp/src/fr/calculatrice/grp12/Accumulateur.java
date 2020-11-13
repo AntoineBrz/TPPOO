@@ -1,6 +1,9 @@
 package fr.calculatrice.grp12;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import java.beans.PropertyChangeListener;
 
 
@@ -18,12 +21,16 @@ public class Accumulateur implements IAccumulateur {
 	// Mémoire accumulant les chiffres d'une saisie en cours
 	ArrayList<Character> memoireCaractere = new ArrayList<>(); 
 	
+	// Pour visualiser la pile après chaque opération logique
+	Logger logger;
+
 	public Accumulateur(PropertyChangeListener propertyChangeListener) {
 		/*
 		 * Constructeur qui enregistre un observeur de type PropertyChangeListener,
 		 * qui va être notifié des types d'évènements définis dans les constantes de classe.
 		 */
 		this.pcs.addPropertyChangeListener(propertyChangeListener);
+		logger = Logger.getLogger("Accumulateur");
 	}
 	
 
@@ -62,6 +69,7 @@ public class Accumulateur implements IAccumulateur {
 		Double oldResult = this.pile.lastElement();
 		pile.add(result);
 		pcs.firePropertyChange(RESULTAT, oldResult, result);
+		logger.log(Level.INFO,"Pile : "+pile.toString());
 	}
 
 
@@ -76,6 +84,7 @@ public class Accumulateur implements IAccumulateur {
 		Double oldResult = this.pile.lastElement();
 		pile.add(result);
 		pcs.firePropertyChange(RESULTAT, oldResult, result);
+		logger.log(Level.INFO,"Pile : "+pile.toString());
 	}
 
 	@Override
@@ -87,6 +96,7 @@ public class Accumulateur implements IAccumulateur {
 		Double oldResult = this.pile.lastElement();
 		pile.add(result);
 		pcs.firePropertyChange(RESULTAT, oldResult, result);
+		logger.log(Level.INFO,"Pile : "+pile.toString());
 	}
 
 	@Override
@@ -100,6 +110,7 @@ public class Accumulateur implements IAccumulateur {
 		Double oldResult = this.pile.lastElement();
 		pile.add(result);
 		pcs.firePropertyChange(RESULTAT, oldResult, result);
+		logger.log(Level.INFO,"Pile : "+pile.toString());
 	}
 
 	@Override
@@ -111,6 +122,7 @@ public class Accumulateur implements IAccumulateur {
 		Double result=-oldResult;
 		pile.add(result);
 		pcs.firePropertyChange(RESULTAT,oldResult,result);
+		logger.log(Level.INFO,"Pile : "+pile.toString());
 	}
 
 	@Override
@@ -157,6 +169,7 @@ public class Accumulateur implements IAccumulateur {
 		pcs.firePropertyChange("saisie", null, Double.parseDouble(cumul));
 		pcs.firePropertyChange(PUSH, oldNumber, Double.parseDouble(cumul));
 		memoireCaractere = new ArrayList<Character>();
+		logger.log(Level.INFO,"Pile : "+pile.toString());
 	}
 
 	

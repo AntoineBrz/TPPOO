@@ -2,11 +2,8 @@ package fr.calculatrice.grp12;
 
 import java.util.ArrayList;
 
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
@@ -51,12 +48,9 @@ public class Vue extends Application  implements IVue  {
 	}
 
 	public void init() throws Exception {
-		
 		if (Vue.handler==null) 
-			throw new Exception("Le controleur "
-					+ "doit s'enregistrer "
-					+ "en tant que handler");
-	
+			throw new Exception("Vue doit enregistrer un handler "
+					+ "pour les actions des boutons");
 	}
 	
 	
@@ -110,32 +104,25 @@ public class Vue extends Application  implements IVue  {
     public void createZeroToNine(GridPane root){
         /*
          * Crée et dispose les boutons pour les chiffres de 0 à 9
-         * dans le GridPane associé
+         * dans le GridPane associé.
          */
-    	int s=0;
         for(int i=1;i<10;i++){
             String title=String.valueOf(i);
             Button btn=new Button(title);   
-            btn.addEventHandler(MouseEvent.MOUSE_CLICKED, this.handler);
+            btn.addEventHandler(MouseEvent.MOUSE_CLICKED, handler);
             
-            if(s<3){
-                GridPane.setHalignment(btn, HPos.RIGHT);
-                root.add(btn,s,3);
-                s+=1;
+            if(i<4){
+            	// de 1 à 3 : tout en haut, en ligne 3 du gridPane
+                root.add(btn,i-1,3);
             }
-            else if(s<6){
-                GridPane.setHalignment(btn, HPos.RIGHT);
-                root.add(btn,s-3,2);
-                s+=1;
+            else if(i<7){
+            	// de 4 à 6 : en ligne 2 du gridPane
+                root.add(btn,i-4,2);
             }
-            else if(s<9){
-                GridPane.setHalignment(btn, HPos.RIGHT);
-                root.add(btn,s-6,1);
-                s+=1;
+            else if(i<10){
+            	// de 7 à 9 : tout en bas en ligne 1 du gridPane
+                root.add(btn,i-7,1);
             }
-         
-         
-           
         }
        
         Button btn=new Button("0"); 
@@ -144,26 +131,26 @@ public class Vue extends Application  implements IVue  {
         root.add(btn,0,4);
         
         //OPERATIONS
-        String[] labelop={"+","-","x","/"};
-        int i=1;
-        for(String op : labelop) {
- 	       Button btnop=new Button(op);
-           btnop.addEventHandler(MouseEvent.MOUSE_CLICKED, handler);
- 	       GridPane.setHalignment(btnop, HPos.RIGHT);
- 	       root.add(btnop,3,i);
- 	       i+=1;
- 	       }
+        String[] btnsOperation={"+","-","x","/"};
+        int row=1;
+        for(String op : btnsOperation) {
+ 	       Button btnOperation=new Button(op);
+           btnOperation.addEventHandler(MouseEvent.MOUSE_CLICKED, handler);
+ 	       GridPane.setHalignment(btnOperation, HPos.RIGHT);
+ 	       root.add(btnOperation,3,row);
+ 	       row+=1;
+ 	    }
         
-        //MANIP
-        String[] labelmanip={"←","↵"};
-        int k=1;
-        for(String manip : labelmanip) {
- 	       Button btnmanip=new Button(manip);
-           btnmanip.addEventHandler(MouseEvent.MOUSE_CLICKED, handler);
- 	       GridPane.setHalignment(btnmanip, HPos.RIGHT);
- 	       root.add(btnmanip,k,4);
- 	       k+=1;
- 	       }
+        //AUTRES TOUCHES de manip. : retour et entrée
+        String[] btnsBackEnter={"←","↵"};
+        int col=1;
+        for(String manip : btnsBackEnter) {
+ 	       Button btnManip=new Button(manip);
+           btnManip.addEventHandler(MouseEvent.MOUSE_CLICKED, handler);
+ 	       GridPane.setHalignment(btnManip, HPos.RIGHT);
+ 	       root.add(btnManip,col,4);
+ 	       col+=1;
+ 	    }
         
     }
     
@@ -172,6 +159,9 @@ public class Vue extends Application  implements IVue  {
 
 	@Override
 	public void affiche() throws Exception {
+		/*
+		 * Lance l'application JavaFx dans un contexte statique.
+		 */
 		launch();
 	}
 
