@@ -8,25 +8,24 @@ import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Controleur implements 	PropertyChangeListener,
 									EventHandler<MouseEvent>{
 	
 	IAccumulateur acc = new Accumulateur((PropertyChangeListener)this);
-	IVue view = new Vue();
-	ArrayList<Character> memoire = new ArrayList<Character>();
+	IVue view = new Vue((EventHandler<MouseEvent>)this);
 	
 	public Controleur() {
-		Vue.handler = (EventHandler<MouseEvent>)this;
 	}
 	
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		/*
-		 * Avertit le controleur d'une nouvelle valeur à passer à la vue
+		 * Prend en charge les actions logiques implémentées par l'accumulateur
+		 * et les récupère pour modifier les données de la vue.
+		 * Les différents cas d'action logiques sont les constantes 
+		 * de la classe Accumulateur.
 		 */
-		
 
 		if (evt.getPropertyName().equals(Accumulateur.SAISIE)) { // en X
 			view.changeX(evt.getNewValue().toString());
@@ -40,8 +39,7 @@ public class Controleur implements 	PropertyChangeListener,
 		}
 		
 		else if (evt.getPropertyName().equals(Accumulateur.RESULTAT)) { 
-			//mettre nouvelle valeur en X, enlever anciennes car QUE 2 RESULTATS
-			view.changeX(evt.getNewValue().toString());
+			view.changeX(evt.getNewValue().toString()); // répliquer le résultat de calcul en X
 			ArrayList<String> newData = new ArrayList<String>();
 			newData.add(evt.getOldValue().toString());
 			newData.add(evt.getNewValue().toString());
@@ -53,15 +51,22 @@ public class Controleur implements 	PropertyChangeListener,
 
 	@Override
 	public void handle(MouseEvent evt) {
+		/*
+		 * Traitement de l'action à effectuer grâce à texte du btn 
+		 * (1 caractère)
+		 */
 		Button btn = (Button)evt.getSource();
-		System.out.println(btn.getText());
-		calculer(btn.getText().charAt(0));
+		handleButtonCharacter(btn.getText().charAt(0));
 	}
 	
     
-    private void calculer(char touche) {
-    	String op = String.valueOf(touche); // eviter charAt
-    	// TODO faire usage de Vue.ADD = "+" static final...
+    private void handleButtonCharacter(char touche) {
+    	/*
+    	 * Effectue la délégation d'action vers le modèle (Accumulateur).
+    	 * La méthode propertyChange se chargera de récupérer traiter les actions
+    	 * du modèle ensuite, et de les passer à la vue.
+    	 */
+    	String op = String.valueOf(touche); // pour éviter charAt à chaque case
     	switch (op) {
     	case "+":
     		this.acc.add();
@@ -82,14 +87,18 @@ public class Controleur implements 	PropertyChangeListener,
     	case "←":
     		this.acc.backspace();
     		break;
-    	default: // chiffres 0 à 9
+    	default: // pour les chiffres 0 à 9
     		this.acc.accumuler(touche);
     	} 
 	}
     
     
-
+    
 	public static void main(String[] args) {
+		/*
+		 * Lancement de l'application via le contrôleur
+		 * et l'appel de méthode affiche() de la vue.
+		 */
         Controleur controleur = new Controleur();
 
         try {

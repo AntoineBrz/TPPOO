@@ -72,7 +72,7 @@ public class Accumulateur implements IAccumulateur {
 		 * (avant-dernier - dernier).
 		 */
 		pile.swap();
-		Double result = - (double)pile.pop() + (double)pile.pop();
+		Double result = (double)pile.pop() - (double)pile.pop();
 		Double oldResult = this.pile.lastElement();
 		pile.add(result);
 		pcs.firePropertyChange(RESULTAT, oldResult, result);
