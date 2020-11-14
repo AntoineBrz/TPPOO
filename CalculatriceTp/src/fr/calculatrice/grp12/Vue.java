@@ -2,6 +2,7 @@ package fr.calculatrice.grp12;
 
 import java.util.ArrayList;
 
+
 import javafx.event.EventHandler;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -19,6 +20,11 @@ import javafx.scene.paint.Color;
  */
 public class Vue extends Application  implements IVue  {
     
+	private static final double LARGEUR = 600;
+	private static final double HAUTEURRESULTAT = 30;
+	private static final double HAUTEUR = 400;	
+	private static final double MARGE = 10;
+	
 	public static EventHandler<MouseEvent> handler;
 	ArrayList<String> memoireResultats = new ArrayList<>();
 	private static Label x,y,z;
@@ -65,52 +71,73 @@ public class Vue extends Application  implements IVue  {
     	 * Les autres contiennent la saisie en cours
     	 * ou les saisies précédentes.
     	 */
+    	
+    	//Création d'une "boîte verticale" VBox
 		VBox rootBox= new VBox();
 		rootBox.setSpacing(10);
-	    rootBox.setPadding(new Insets(15,20, 10,10));
+	    rootBox.setPadding(new Insets(MARGE));
 	
-		// Afficheurs, nommés X, Y, Z de bas en haut (X est le champ de saisie)
-		z=new Label("Z = " + memoireResultats.get(2));
+		// Déclaration et création des Afficheurs, nommés X, Y, Z de bas en haut (X est le champ de saisie)
+		//Afficheur Z
+	    z=new Label("Z = " + memoireResultats.get(2));
+		z.setMinSize(LARGEUR, HAUTEURRESULTAT);
 		z.setBackground(new Background(
 				new BackgroundFill(Color.rgb(200, 200, 200, 1), null, null))
 				);
 		rootBox.getChildren().add(z);
-		
+		//Afficheur Y
 		y=new Label("Y = " + memoireResultats.get(1));
+		y.setMinSize(LARGEUR, HAUTEURRESULTAT);
 		y.setBackground(new Background(
 				new BackgroundFill(Color.rgb(200, 200, 200, 1), null, null))
 				);
 		rootBox.getChildren().add(y);
-		
+		//Afficheur X
 		x=new Label("X = " + memoireResultats.get(0));
+		x.setMinSize(LARGEUR, HAUTEURRESULTAT);
 		x.setBackground(new Background(
 				new BackgroundFill(Color.rgb(200, 200, 200, 1), null, null))
 				);
 		rootBox.getChildren().add(x);
 	
-		// Un tableau : GridPane pour disposer les chiffres de 0 à 9
+		// Une Grille : GridPane pour disposer les chiffres de 0 à 9
 		GridPane numbersGrid = new GridPane();
-	    createZeroToNine(numbersGrid);
+	    positionnementBoutons(numbersGrid);
 	    rootBox.getChildren().add(numbersGrid);
+	    
+	    //Petit texte en bas de la vue 
+	    Label copyrights = new Label("Andrianasolo & Bruez Inc., tous droits réservés");
+	    copyrights.snapPositionX(LARGEUR/2);
+	    rootBox.getChildren().add(copyrights);
      
-	    // Scene principale
-        Scene scene = new Scene(rootBox, 300, 300);
-        primaryStage.setTitle("Calculatrice");
+	    // Création de la Scene principale qui contiendra notre VBox
+        Scene scene = new Scene(rootBox, LARGEUR+2*MARGE, HAUTEUR+MARGE);
+        primaryStage.setTitle("⚘ Polish Flower Calculator ⚘ ");
         primaryStage.setScene(scene);
         primaryStage.show();
    }
 
-   
-    public void createZeroToNine(GridPane root){
+    //Méthode d'automatisation de la création des boutons 
+    public Button createButton(String title, Double largeur, Double hauteur, String couleurHexa,Boolean background) {
+    	Button btn =new Button(title);
+    	btn.setMinSize(largeur, hauteur);
+    	if(background) {
+    		btn.setBackground(new Background(new BackgroundFill(Color.web(couleurHexa),new CornerRadii(70),null)));
+    		
+    	}
+    	btn.addEventHandler(MouseEvent.MOUSE_CLICKED, handler);
+    	return btn;
+    }    
+    //Méthode d'automatisation de positionnement des boutons 
+    public void positionnementBoutons(GridPane root){
         /*
          * Crée et dispose les boutons pour les chiffres de 0 à 9
          * dans le GridPane associé.
          */
         for(int i=1;i<10;i++){
             String title=String.valueOf(i);
-            Button btn=new Button(title);   
-            btn.addEventHandler(MouseEvent.MOUSE_CLICKED, handler);
-            
+            Button btn=createButton(title,LARGEUR/4,(HAUTEUR-3*HAUTEURRESULTAT-60)/4,"d5def6",false);            
+           
             if(i<4){
             	// de 1 à 3 : tout en haut, en ligne 3 du gridPane
                 root.add(btn,i-1,3);
@@ -125,29 +152,24 @@ public class Vue extends Application  implements IVue  {
             }
         }
        
-        Button btn=new Button("0"); 
-        btn.addEventHandler(MouseEvent.MOUSE_CLICKED, handler);
+        Button btn = createButton("0",LARGEUR/4,(HAUTEUR-3*HAUTEURRESULTAT-60)/4,"d5def6",false); 
         GridPane.setHalignment(btn, HPos.RIGHT);
         root.add(btn,0,4);
         
-        //OPERATIONS
+        //Positionne les boutons d'opérations 
         String[] btnsOperation={"+","-","x","/"};
         int row=1;
         for(String op : btnsOperation) {
- 	       Button btnOperation=new Button(op);
-           btnOperation.addEventHandler(MouseEvent.MOUSE_CLICKED, handler);
- 	       GridPane.setHalignment(btnOperation, HPos.RIGHT);
+ 	       Button btnOperation = createButton(op,LARGEUR/4,(HAUTEUR-3*HAUTEURRESULTAT-60)/4,"d5def6",false); 
  	       root.add(btnOperation,3,row);
  	       row+=1;
  	    }
         
-        //AUTRES TOUCHES de manip. : retour et entrée
+        //Positionne les touches retour et entrée
         String[] btnsBackEnter={"←","↵"};
         int col=1;
         for(String manip : btnsBackEnter) {
- 	       Button btnManip=new Button(manip);
-           btnManip.addEventHandler(MouseEvent.MOUSE_CLICKED, handler);
- 	       GridPane.setHalignment(btnManip, HPos.RIGHT);
+ 	       Button btnManip = createButton(manip,LARGEUR/4,(HAUTEUR-3*HAUTEURRESULTAT-60)/4,"d5def6",true); 
  	       root.add(btnManip,col,4);
  	       col+=1;
  	    }
