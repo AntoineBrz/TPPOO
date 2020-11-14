@@ -100,7 +100,7 @@ public class Vue extends Application  implements IVue  {
 				);
 		rootBox.getChildren().add(x);
 	
-		// Une Grille : GridPane pour disposer les chiffres de 0 à 9
+		// Une Grille : GridPane pour disposer tous les boutons
 		GridPane numbersGrid = new GridPane();
 	    positionnementBoutons(numbersGrid);
 	    rootBox.getChildren().add(numbersGrid);
@@ -122,7 +122,7 @@ public class Vue extends Application  implements IVue  {
     	Button btn =new Button(title);
     	btn.setMinSize(largeur, hauteur);
     	if(background) {
-    		btn.setBackground(new Background(new BackgroundFill(Color.web(couleurHexa),new CornerRadii(70),null)));
+    		btn.setBackground(new Background(new BackgroundFill(Color.web(couleurHexa),new CornerRadii(15),null)));
     		
     	}
     	btn.addEventHandler(MouseEvent.MOUSE_CLICKED, handler);
@@ -136,7 +136,7 @@ public class Vue extends Application  implements IVue  {
          */
         for(int i=1;i<10;i++){
             String title=String.valueOf(i);
-            Button btn=createButton(title,LARGEUR/4,(HAUTEUR-3*HAUTEURRESULTAT-60)/4,"d5def6",false);            
+            Button btn=createButton(title,LARGEUR/4,(HAUTEUR-4*HAUTEURRESULTAT-60)/5,"d5def6",false);            
            
             if(i<4){
             	// de 1 à 3 : tout en haut, en ligne 3 du gridPane
@@ -152,7 +152,7 @@ public class Vue extends Application  implements IVue  {
             }
         }
        
-        Button btn = createButton("0",LARGEUR/4,(HAUTEUR-3*HAUTEURRESULTAT-60)/4,"d5def6",false); 
+        Button btn = createButton("0",LARGEUR/4,(HAUTEUR-4*HAUTEURRESULTAT-60)/5,"d5def6",false); 
         GridPane.setHalignment(btn, HPos.RIGHT);
         root.add(btn,0,4);
         
@@ -160,19 +160,25 @@ public class Vue extends Application  implements IVue  {
         String[] btnsOperation={"+","-","x","/"};
         int row=1;
         for(String op : btnsOperation) {
- 	       Button btnOperation = createButton(op,LARGEUR/4,(HAUTEUR-3*HAUTEURRESULTAT-60)/4,"d5def6",false); 
+ 	       Button btnOperation = createButton(op,LARGEUR/4,(HAUTEUR-4*HAUTEURRESULTAT-60)/5,"d5def6",false); 
  	       root.add(btnOperation,3,row);
  	       row+=1;
  	    }
         
         //Positionne les touches retour et entrée
-        String[] btnsBackEnter={"←","↵"};
-        int col=1;
-        for(String manip : btnsBackEnter) {
- 	       Button btnManip = createButton(manip,LARGEUR/4,(HAUTEUR-3*HAUTEURRESULTAT-60)/4,"d5def6",true); 
- 	       root.add(btnManip,col,4);
- 	       col+=1;
- 	    }
+        String[] btnsBackEnter={"←",".","↵"};
+        int [] col= {1,4};
+        for(int i=0;i<2;i++) {
+        	 	Button btnManip = createButton(btnsBackEnter[i],LARGEUR/4,(HAUTEUR-4*HAUTEURRESULTAT-60)/5,"d5def6",false); 
+        		root.add(btnManip,col[0],col[1]);
+        		col[0]= 2;
+     	      	}
+        Button btnManip = createButton(btnsBackEnter[2],LARGEUR,(HAUTEUR-4*HAUTEURRESULTAT-60)/5,"a2cdfa",true); 
+        root.add(btnManip, 0,5,4,1);
+        	
+        	      
+ 	        
+ 	    
         
     }
     
@@ -193,7 +199,7 @@ public class Vue extends Application  implements IVue  {
 		/*
 		 * TODO : doc ici
 		 */
-		x.setText(current);
+		x.setText("X = "+current);
 	}
     
 	
@@ -204,8 +210,8 @@ public class Vue extends Application  implements IVue  {
 		 * newData contient soit 1 nouveau nombre en entrée, 
 		 * soit deux valeurs : l'ancienne valeur en y, la nouvelle valeur en x
 		 */
-		z.setText(newData.get(0));
-		y.setText(newData.get(1));
+		z.setText("Z = "+newData.get(0));
+		y.setText("Y = "+newData.get(1));
 		}
 		
 	
