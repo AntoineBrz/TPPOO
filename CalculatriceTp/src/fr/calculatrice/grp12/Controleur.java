@@ -66,7 +66,7 @@ public class Controleur implements 	PropertyChangeListener,
     	 * La méthode propertyChange() se chargera de récupérer traiter les actions
     	 * du modèle ensuite, et de les passer à la vue.
     	 */
-    	String op = String.valueOf(touche); // pour éviter charAt() à chaque "case"
+    	String op = String.valueOf(touche); /* pour éviter charAt() à chaque "case" */
     	switch (op) {
     	case "+":
     		this.acc.add();
@@ -87,7 +87,7 @@ public class Controleur implements 	PropertyChangeListener,
     	case "←":
     		this.acc.backspace();
     		break;
-    	default: // pour les chiffres 0 à 9
+    	default: /* pour les chiffres 0 à 9 */
     		this.acc.accumuler(touche);
     	} 
 	}
@@ -96,8 +96,8 @@ public class Controleur implements 	PropertyChangeListener,
     
 	public static void main(String[] args) {
 		/*
-		 * Lancement de l'application via le contrôleur
-		 * et l'appel de méthode affiche() de la vue.
+		 * Lancement de l'application via un contrôleur
+		 * appelant la méthode affiche() de la vue.
 		 */
         Controleur controleur = new Controleur();
 

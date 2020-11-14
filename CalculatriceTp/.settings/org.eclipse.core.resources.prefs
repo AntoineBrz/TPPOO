@@ -1,3 +1,8 @@
 eclipse.preferences.version=1
+encoding//src/fr/calculatrice/grp12/Accumulateur.java=UTF-8
 encoding//src/fr/calculatrice/grp12/Controleur.java=UTF-8
+encoding//src/fr/calculatrice/grp12/IAccumulateur.java=UTF-8
+encoding//src/fr/calculatrice/grp12/IVue.java=UTF-8
+encoding//src/fr/calculatrice/grp12/Pile.java=UTF-8
 encoding//src/fr/calculatrice/grp12/Vue.java=UTF-8
+encoding/<project>=UTF-8

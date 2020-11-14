@@ -1,149 +1,183 @@
 package fr.calculatrice.grp12;
+
+import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import java.beans.PropertyChangeListener;
-
 
 public class Accumulateur implements IAccumulateur {
 
-	// Noms d'�v�nements � passer au contr�leur
+	/* Noms d'événements à passer au contrôleur */
+	/**
+	 * Propriété de l'évènement qui met à jour la saisie en cours
+	 */
 	public static final String SAISIE = "saisieEnCours";
+	/**
+	 * Propriété de l'évènement qui termine la saisie en cours
+	 */
 	public static final String PUSH = "nouveauNombre";
+	/**
+	 * Propriété de l'évènement de fin d'une opération mathématique
+	 */
 	public static final String RESULTAT = "nouveauResultatDeCalcul";
 	
-	// M�moire (stack) pour piocher les op�randes/op�rateurs de calcul
+	/* Mémoire (stack) pour piocher les opérandes/opérateurs de calcul */
 	Pile pile = new Pile();
-	// Objet qui notifie l'observeur (le contr�leur enregistr� au constructeur)
+	
+	/* Objet qui notifie l'observeur (le contrôleur) */
 	PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-	// M�moire accumulant les chiffres d'une saisie en cours
+	
+	/* Mémoire accumulant les chiffres d'une saisie en cours */
 	ArrayList<Character> memoireCaractere = new ArrayList<>(); 
 	
-	// Pour visualiser la pile apr�s chaque op�ration logique
-	Logger logger;
+	Logger logger = Logger.getLogger("Accumulateur"); /* pour visualiser la pile après chaque opération logique */
 
+	/** 
+	 * Constructeur qui enregistre un <b>observeur</b> de type {@link PropertyChangeListener},
+	 * qui va être notifié des types d'évènements définis dans les <a href="../../../constant-values.html">constantes de classe</a>.
+	 * 
+	 * @param propertyChangeListener  le contrôleur qui est notifié 
+	 * des différentes propriétés d'évènement
+	 */
 	public Accumulateur(PropertyChangeListener propertyChangeListener) {
-		/*
-		 * Constructeur qui enregistre un observeur de type PropertyChangeListener,
-		 * qui va �tre notifi� des types d'�v�nements d�finis dans les constantes de classe.
-		 */
 		this.pcs.addPropertyChangeListener(propertyChangeListener);
-		logger = Logger.getLogger("Accumulateur");
 	}
 	
 
-	
+	/**
+	 * Rajoute un nombre à la pile
+	 * 
+	 * @param nombre  le nombre à rajouter
+	 */
 	@Override
 	public void push(Double nombre) {
 		pile.push(nombre);
 	}
 
+	/**
+	 * Même méthode que clear()
+	 */
 	@Override
 	public void drop() {
-		/*
-		 * M�me m�thode que clear()
-		 */
 		pile.clear();
 	}
-
+	
+	/**
+	 * Interchange les deux derniers éléments de la pile,
+	 * utile pour les opérations non commutatives : 
+	 * {@link #sub()} et {@link #div()}
+	 */
 	@Override
 	public void swap() {
-		/*
-		 * Interchange les deux derniers �l�ments,
-		 * utile pour les op�rations - et / non commutatives
-		 */
 		pile.swap();
 	}
 
 	
 	/*CALCULS*/
 	
+	/**
+	 * Additionne les deux derniers nombres de la pile.
+	 */
+	@Override
 	public void add() {
-		/*
-		 * Additionne les deux derniers nombres de la pile.
-		 */
+		if (pile.size()<2) return;
 		Double result = (double)pile.pop() + (double)pile.pop();
-		// ancien nombre saisi qui est maintenant au sommet de la pile:
-		Double oldResult = this.pile.lastElement();
-		pile.add(result);
-		pcs.firePropertyChange(RESULTAT, oldResult, result);
+		postOperation(result);
 		logger.log(Level.INFO,"Pile : "+pile.toString());
 	}
 
-
+	/**
+	 * Soustrait les deux derniers nombres de la pile 
+	 * (avant-dernier - dernier).
+	 */
 	@Override
 	public void sub() {
-		/*
-		 * Soustrait les deux derniers nombres de la pile 
-		 * (avant-dernier - dernier).
-		 */
-		pile.swap();
+		if (pile.size()<2) return;
+		pile.swap(); /* soustraction : non commutative */
 		Double result = (double)pile.pop() - (double)pile.pop();
-		Double oldResult = this.pile.lastElement();
-		pile.add(result);
-		pcs.firePropertyChange(RESULTAT, oldResult, result);
+		postOperation(result);
 		logger.log(Level.INFO,"Pile : "+pile.toString());
 	}
 
+	/**
+	 * Multiplie les deux derniers nombres de la pile.
+	 */
 	@Override
 	public void mult() {
-		/*
-		 * Multiplie les deux derniers nombres de la pile.
-		 */
+		if (pile.size()<2) return;
 		Double result = (double)pile.pop() * (double)pile.pop();
-		Double oldResult = this.pile.lastElement();
-		pile.add(result);
-		pcs.firePropertyChange(RESULTAT, oldResult, result);
+		postOperation(result);
 		logger.log(Level.INFO,"Pile : "+pile.toString());
 	}
 
+	/**
+	 * Divise les deux derniers nombres de la pile.
+	 * (avant-dernier / dernier).
+	 */
 	@Override
 	public void div() {
-		/*
-		 * Fait le rapport des deux derniers nombres de la pile 
-		 * (avant-dernier / dernier).
-		 */
-		pile.swap();
+		if (pile.size()<2) return;
+		pile.swap(); /* division : non commutative */
 		Double result = (double)pile.pop() / (double)pile.pop();
-		Double oldResult = this.pile.lastElement();
-		pile.add(result);
-		pcs.firePropertyChange(RESULTAT, oldResult, result);
+		postOperation(result);
 		logger.log(Level.INFO,"Pile : "+pile.toString());
 	}
 
+	/**
+	 * Renvoie l'opposé du dernier élément de la pile.
+	 */
 	@Override
 	public void neg() {
-		/*
-		 * Renvoie l'oppos� du dernier �l�ment de la pile.
-		 */
-		Double oldResult=this.pile.pop();;
-		Double result=-oldResult;
-		pile.add(result);
-		pcs.firePropertyChange(RESULTAT,oldResult,result);
+		if (pile.size()<1) return;
+		Double result=-this.pile.pop();
+		postOperation(result);
 		logger.log(Level.INFO,"Pile : "+pile.toString());
 	}
 
+	/**
+	 * Annule la saisie du dernier chiffre tapé sur la calculatrice.
+	 */
 	@Override
 	public void backspace() {
-		/*
-		 * Annule la saisie du dernier chiffre tap� sur la calculatrice.
-		 */
 		try {
 			memoireCaractere.remove(memoireCaractere.size()-1);
+			String cumul = "";
+			for(Character chiffre:memoireCaractere)
+				cumul += chiffre;
+			pcs.firePropertyChange(SAISIE, null, Double.parseDouble(cumul));
 		} catch(Exception e) {
-			
+			memoireCaractere = new ArrayList<Character>();
+			pcs.firePropertyChange(SAISIE, null, 0);
+		}
+	}
+
+	
+	/**
+	 * Cumule les chiffres (de 0 à 9) en cours de saisie
+	 * et envoie le nombre correspondant au cumul actuel au contrôleur.
+	 * (propriété d'évènement {@link #RESULTAT})
+	 */
+	private void postOperation(Double result) {
+		pile.add(result);
+		try {
+			Double oldResult = this.pile.lastElement(); /* ancien nombre saisi */
+			pcs.firePropertyChange(RESULTAT, oldResult, result);
+		} catch (Exception e) {
+			pcs.firePropertyChange(RESULTAT, 0., 0.);
 		}
 	}
 
 
+	
+	/**
+	 * Cumule les chiffres (de 0 à 9) en cours de saisie
+	 * et envoie le nombre correspondant au cumul actuel au contrôleur
+	 * (propriété d'évènement {@link #SAISIE})
+	 */
 	@Override
 	public void accumuler(Character touche) {
-		/*
-		 * Cumule les chiffres (de 0 � 9) en cours de saisie
-		 * et envoie le nombre correspondant au cumul actuel au contr�leur.
-		 */
 		memoireCaractere.add(touche);
 		String cumul = "";
 		for(Character chiffre:memoireCaractere)
@@ -152,23 +186,22 @@ public class Accumulateur implements IAccumulateur {
 	}
 
 
-
+	/**
+	 * Récupère le cumul de chiffres fait par {@link #accumuler(Character)}
+	 * qui correspond au nombre entier saisi.
+	 * Envoie ce nombre entier au contrôleur 
+	 * pour notifier de la fin de saisie 
+	 * (propriété d'évènement {@link #PUSH})
+	 */
 	@Override
 	public void reset() {
-		/*
-		 * R�cup�re le cumul de chiffre fait par accumuler()
-		 * qui correspond au nombre entier saisi.
-		 * Envoie ce nombre entier au contr�leur 
-		 * pour notifier de la fin de saisie.
-		 */
 		String cumul = "";
 		for(Character chiffre:memoireCaractere)
 			cumul += chiffre;
 		Double oldNumber=pile.lastElement();
-		pile.push(Double.parseDouble(cumul));
-		pcs.firePropertyChange("saisie", null, Double.parseDouble(cumul));
 		pcs.firePropertyChange(PUSH, oldNumber, Double.parseDouble(cumul));
 		memoireCaractere = new ArrayList<Character>();
+		pile.push(Double.parseDouble(cumul));
 		logger.log(Level.INFO,"Pile : "+pile.toString());
 	}
 
