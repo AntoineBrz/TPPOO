@@ -6,14 +6,15 @@ package fr.calculatrice.grp12;
 import java.util.Stack;
 
 /**
- * @author grp12
- *
- */
+*
+* @author Groupe 12 : ANDRIANASOLO et BRUEZ
+*/
 @SuppressWarnings("serial")
 public class Pile extends Stack<Double> {
 
 	/**
-	 * 
+	 * La classe qui garde en mémoire les nombres utilisés
+	 * pour les calculs
 	*/
 	public Pile() {
 		this.add(0.);

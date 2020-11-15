@@ -3,10 +3,14 @@ package fr.calculatrice.grp12;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
+/**
+*
+* @author Groupe 12 : ANDRIANASOLO et BRUEZ
+*/
 public class Accumulateur implements IAccumulateur {
 
 	/* Noms d'événements à passer au contrôleur */
@@ -82,7 +86,7 @@ public class Accumulateur implements IAccumulateur {
 	 */
 	@Override
 	public void add() {
-		if (pile.size()<2) return;
+		if (pile.size()<2) return; /* valider qu'une opération est possible */
 		Double result = (double)pile.pop() + (double)pile.pop();
 		postOperation(result);
 		logger.log(Level.INFO,"Pile : "+pile.toString());
@@ -142,14 +146,15 @@ public class Accumulateur implements IAccumulateur {
 	@Override
 	public void backspace() {
 		try {
-			memoireCaractere.remove(memoireCaractere.size()-1);
+			Character removed = memoireCaractere.remove(memoireCaractere.size()-1);
+			if (removed.toString()==".") backspace();
 			String cumul = "";
 			for(Character chiffre:memoireCaractere)
 				cumul += chiffre;
 			pcs.firePropertyChange(SAISIE, null, Double.parseDouble(cumul));
 		} catch(Exception e) {
 			memoireCaractere = new ArrayList<Character>();
-			pcs.firePropertyChange(SAISIE, null, 0);
+			pcs.firePropertyChange(SAISIE, null, 0.);
 		}
 	}
 
@@ -160,12 +165,13 @@ public class Accumulateur implements IAccumulateur {
 	 * (propriété d'évènement {@link #RESULTAT})
 	 */
 	private void postOperation(Double result) {
-		pile.add(result);
+		Double oldResult=0.;
 		try {
-			Double oldResult = this.pile.lastElement(); /* ancien nombre saisi */
-			pcs.firePropertyChange(RESULTAT, oldResult, result);
+			oldResult = this.pile.lastElement(); /* ancien nombre saisi */
 		} catch (Exception e) {
-			pcs.firePropertyChange(RESULTAT, 0., 0.);
+		} finally {
+			pile.add(result);
+			pcs.firePropertyChange(RESULTAT, oldResult, result);				
 		}
 	}
 
@@ -178,11 +184,14 @@ public class Accumulateur implements IAccumulateur {
 	 */
 	@Override
 	public void accumuler(Character touche) {
+		if (Collections.frequency(memoireCaractere, ".".charAt(0))==1
+				&& touche.toString().equals(".")) return; /* déjà une virgule !*/
 		memoireCaractere.add(touche);
-		String cumul = "";
+		String cumul = "0";
 		for(Character chiffre:memoireCaractere)
 			cumul += chiffre;
-		pcs.firePropertyChange(SAISIE, null, Double.parseDouble(cumul));
+		Double nombreSaisi = Double.parseDouble(cumul);
+		pcs.firePropertyChange(SAISIE, null, nombreSaisi);
 	}
 
 
@@ -195,14 +204,16 @@ public class Accumulateur implements IAccumulateur {
 	 */
 	@Override
 	public void reset() {
-		String cumul = "";
+		String cumul = "0";
 		for(Character chiffre:memoireCaractere)
 			cumul += chiffre;
-		Double oldNumber=pile.lastElement();
+		Double oldNumber = pile.lastElement();
 		pcs.firePropertyChange(PUSH, oldNumber, Double.parseDouble(cumul));
-		memoireCaractere = new ArrayList<Character>();
+		
 		pile.push(Double.parseDouble(cumul));
 		logger.log(Level.INFO,"Pile : "+pile.toString());
+		
+		memoireCaractere = new ArrayList<Character>();
 	}
 
 	

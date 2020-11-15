@@ -9,6 +9,10 @@ import javafx.scene.input.MouseEvent;
 
 import java.util.ArrayList;
 
+/**
+*
+* @author Groupe 12 : ANDRIANASOLO et BRUEZ
+*/
 public class Controleur implements 	PropertyChangeListener,
 									EventHandler<MouseEvent>{
 	
@@ -18,14 +22,14 @@ public class Controleur implements 	PropertyChangeListener,
 	public Controleur() {
 	}
 	
+	/**
+	 * Prend en charge les actions logiques implémentées par l'accumulateur
+	 * et les récupère pour modifier les données de la vue.
+	 * Les différents cas d'action logiques sont les constantes 
+	 * de la classe Accumulateur.
+	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		/*
-		 * Prend en charge les actions logiques implémentées par l'accumulateur
-		 * et les récupère pour modifier les données de la vue.
-		 * Les différents cas d'action logiques sont les constantes 
-		 * de la classe Accumulateur.
-		 */
 
 		if (evt.getPropertyName().equals(Accumulateur.SAISIE)) { // en X
 			view.changeX(evt.getNewValue().toString());
@@ -48,24 +52,22 @@ public class Controleur implements 	PropertyChangeListener,
 		
 	}
               
-
+	/**
+	 * Traitement de l'action à effectuer grâce au texte du btn 
+	 * (1 caractère)
+	 */
 	@Override
 	public void handle(MouseEvent evt) {
-		/*
-		 * Traitement de l'action à effectuer grâce au texte du btn 
-		 * (1 caractère)
-		 */
 		Button btn = (Button)evt.getSource();
 		handleButtonCharacter(btn.getText().charAt(0));
 	}
 	
-    
+	/**
+	 * Effectue la délégation d'action vers le modèle (Accumulateur).
+	 * La méthode propertyChange() se chargera de récupérer traiter les actions
+	 * du modèle ensuite, et de les passer à la vue.
+	 */
     private void handleButtonCharacter(char touche) {
-    	/*
-    	 * Effectue la délégation d'action vers le modèle (Accumulateur).
-    	 * La méthode propertyChange() se chargera de récupérer traiter les actions
-    	 * du modèle ensuite, et de les passer à la vue.
-    	 */
     	String op = String.valueOf(touche); /* pour éviter charAt() à chaque "case" */
     	switch (op) {
     	case "+":
@@ -93,13 +95,15 @@ public class Controleur implements 	PropertyChangeListener,
 	}
     
     
-    
+	/**
+	 * Lancement de l'application via un contrôleur
+	 * appelant la méthode affiche() de la vue.
+	 * 
+	 * @param args Arguments en ligne de commande
+	 */
 	public static void main(String[] args) {
-		/*
-		 * Lancement de l'application via un contrôleur
-		 * appelant la méthode affiche() de la vue.
-		 */
-        Controleur controleur = new Controleur();
+       
+		Controleur controleur = new Controleur();
 
         try {
 			controleur.view.affiche();

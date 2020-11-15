@@ -4,9 +4,9 @@
 package fr.calculatrice.grp12;
 
 /**
- * @author grp12
- *
- */
+*
+* @author Groupe 12 : ANDRIANASOLO et BRUEZ
+*/
 public interface IAccumulateur {
 
 	public void push(Double nombre);
